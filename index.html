@@ -1,113 +1,175 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIKE STORE - Free Fire</title>
-
+<title>LIKE STORE | Free Fire</title>
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090d16;color:white;
+ font-family:Arial,sans-serif;
 }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b0f19;
-  color: white;
+header{
+ padding:22px;text-align:center;
+ color:#ffca28;font-size:27px;
+ font-weight:bold;border-bottom:1px solid #252c3b;
 }
-
-header {
-  padding: 20px;
-  text-align: center;
-  color: #ffc928;
-  font-size: 25px;
-  font-weight: bold;
+.hero{
+ text-align:center;padding:35px 20px 20px;
 }
-
-main {
-  max-width: 420px;
-  margin: 40px auto;
-  padding: 20px;
+.hero h1{font-size:30px;color:#ffca28}
+.hero p{color:#aab3c5}
+.container{max-width:480px;margin:auto;padding:15px}
+.card{
+ background:#171f30;padding:20px;
+ border-radius:16px;margin-bottom:18px;
+ border:1px solid #303b50;
 }
-
-.card {
-  background: #171f30;
-  padding: 25px;
-  border-radius: 16px;
-  text-align: center;
+h2{font-size:19px;margin-top:0}
+input{
+ width:100%;padding:15px;border:1px solid #39445a;
+ border-radius:10px;background:#0d1422;
+ color:white;font-size:16px;
 }
-
-h1 {
-  color: #ffc928;
+.packages{
+ display:grid;grid-template-columns:1fr 1fr;gap:12px;
 }
-
-input, button {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 9px;
-  margin-top: 15px;
-  font-size: 16px;
+.package{
+ background:#0d1422;border:1px solid #39445a;
+ border-radius:12px;padding:17px 10px;
+ text-align:center;
 }
-
-button {
-  background: #ffc928;
-  font-weight: bold;
-  cursor: pointer;
+.package strong{display:block;font-size:21px;color:#ffca28}
+.package p{font-size:13px;color:#aab3c5}
+.price{font-weight:bold;color:white}
+button{
+ width:100%;padding:14px;border:0;
+ border-radius:10px;background:#ffca28;
+ color:#111;font-size:16px;font-weight:bold;
+ margin-top:12px;cursor:pointer;
 }
-
-footer {
-  text-align: center;
-  color: #8993a5;
-  margin-top: 40px;
-  font-size: 13px;
-}
+.package button{font-size:13px;padding:11px}
+.package.selected{border:2px solid #ffca28}
+.note{font-size:12px;color:#9ba7ba;line-height:1.5}
+#result{color:#ffca28;line-height:1.5}
+footer{text-align:center;padding:25px;color:#778398;font-size:12px}
 </style>
 </head>
-
 <body>
 
 <header>⚡ LIKE STORE</header>
 
-<main>
-  <div class="card">
-    <h1>FREE FIRE LIKE</h1>
-    <p>Selamat datang di LIKE STORE!</p>
+<section class="hero">
+<h1>FREE FIRE LIKE</h1>
+<p>Welcome to LIKE STORE</p>
+</section>
 
-    <input
-      id="uid"
-      placeholder="Masukkan UID Free Fire"
-    >
+<div class="container">
 
-    <button onclick="order()">
-      ORDER NOW
-    </button>
+<div class="card">
+<h2>1. Masukkan UID</h2>
+<input id="uid" type="text"
+placeholder="Masukkan UID Free Fire">
+</div>
 
-    <p id="result"></p>
-  </div>
+<div class="card">
+<h2>2. Pilih Paket Like</h2>
 
-  <footer>LIKE STORE © 2026</footer>
-</main>
+<div class="packages">
+<div class="package" id="p100">
+<strong>100</strong>
+<p>Likes</p>
+<div class="price">Harga menyusul</div>
+<button onclick="choose(100)">PILIH</button>
+</div>
+
+<div class="package" id="p500">
+<strong>500</strong>
+<p>Likes</p>
+<div class="price">Harga menyusul</div>
+<button onclick="choose(500)">PILIH</button>
+</div>
+
+<div class="package" id="p1000">
+<strong>1.000</strong>
+<p>Likes</p>
+<div class="price">Harga menyusul</div>
+<button onclick="choose(1000)">PILIH</button>
+</div>
+
+<div class="package">
+<strong>Custom</strong>
+<p>Paket khusus</p>
+<div class="price">Segera hadir</div>
+<button disabled style="opacity:.5">SOON</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>3. Ringkasan Pesanan</h2>
+<p>UID: <span id="showuid">-</span></p>
+<p>Paket: <span id="showpack">Belum dipilih</span></p>
+<p id="result" class="note">
+Pilih paket untuk melihat ringkasan.
+</p>
+<button onclick="order()">LANJUTKAN</button>
+<p class="note">
+Demo pemesanan. Pengiriman like dan pembayaran
+belum tersedia.
+</p>
+</div>
+
+</div>
+
+<footer>
+LIKE STORE © 2026<br>
+Free Fire Like Service
+</footer>
 
 <script>
-function order() {
-  const uid = document
-    .getElementById("uid")
-    .value.trim();
+let selected = 0;
 
-  const result =
-    document.getElementById("result");
+function choose(amount){
+ selected = amount;
 
-  if (!/^\d+$/.test(uid)) {
-    result.textContent =
-      "Masukkan UID yang benar!";
-    return;
-  }
+ document.querySelectorAll('.package')
+ .forEach(el=>el.classList.remove('selected'));
 
-  result.textContent =
-    "UID diterima. Pengiriman like belum tersedia.";
+ document.getElementById('p'+amount)
+ .classList.add('selected');
+
+ document.getElementById('showpack').textContent =
+ amount.toLocaleString('id-ID')+' Likes';
+
+ document.getElementById('result').textContent =
+ 'Paket berhasil dipilih. Harga belum tersedia.';
+}
+
+function order(){
+ const uid=document.getElementById('uid').value.trim();
+
+ document.getElementById('showuid').textContent =
+ uid || '-';
+
+ if(!/^\d+$/.test(uid)){
+  document.getElementById('result').textContent =
+  'Masukkan UID berupa angka terlebih dahulu.';
+  return;
+ }
+
+ if(!selected){
+  document.getElementById('result').textContent =
+  'Silakan pilih paket terlebih dahulu.';
+  return;
+ }
+
+ document.getElementById('result').textContent =
+ 'UID dan paket berhasil dicatat di halaman ini. '+
+ 'Pemesanan sungguhan belum tersedia.';
 }
 </script>
 
