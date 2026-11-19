@@ -167,9 +167,12 @@ function order(){
   return;
  }
 
- document.getElementById('result').textContent =
- 'UID dan paket berhasil dicatat di halaman ini. '+
- 'Pemesanan sungguhan belum tersedia.';
+ document.getElementById('result').innerHTML =
+'<h3>Konfirmasi Pesanan</h3>'+
+'UID: '+uid+'<br>'+
+'Paket: '+selected.toLocaleString('id-ID')+' Likes<br>'+
+'<p>Status: Menunggu konfirmasi</p>'+
+'<button onclick="location.reload()">Kembali</button>';
 }
 </script>
 
